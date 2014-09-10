@@ -5,3 +5,4 @@ django_project/static/*
 db*
 log*/*
 *.log
+wsgi.py
