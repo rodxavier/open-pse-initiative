@@ -1,7 +1,5 @@
-from django.conf import settings
-from django.core.management.base import BaseCommand, call_command
-
-import requests
+from django.core.management call_command
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Create data for the day'
