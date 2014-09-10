@@ -17,4 +17,4 @@ class Company(models.Model):
         return self.symbol if self.symbol is not None else self.name
         
     def __str__(self):
-        return self.symbol if self.symbil is not None else self.name
+        return self.symbol if self.symbol is not None else self.name
