@@ -22,4 +22,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 OR
 
-1. Help curate data by sending an email to hello@rodxavier.com
+1. Help ensure data accuracy by sending an email to hello@rodxavier.com
