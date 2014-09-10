@@ -95,6 +95,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static_dev'),
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
 # Logging
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 if not os.path.isdir(LOGS_DIR):
