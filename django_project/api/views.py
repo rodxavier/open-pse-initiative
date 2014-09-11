@@ -62,6 +62,7 @@ class QuoteListView(generics.ListAPIView):
         GET     /api/quotes/?from_date=2014-04-07
 
     Get all available end-of-day quotes for all companies starting until the `end_date`
+        
         GET     /api/quotes/?to_date=2014-04-07
         
     Get all available end-of-day quotes for all companies between from the `from_date`, until the `end_date`
