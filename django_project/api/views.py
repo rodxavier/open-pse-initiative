@@ -10,6 +10,14 @@ from quotes.models import Quote
 from serializers import CompanySerializer, QuoteSerializer
     
 class APIRootView(views.APIView):
+    """
+    A Public API that provides end-of-day quotes from the Philippine Stock Exchange(PSE).
+    
+    ### Supported formats
+    - **json**
+    - **xml**
+    - **csv**
+    """
     def get(self, request):
         return Response({
             'version': 0.1,
@@ -20,10 +28,44 @@ class APIRootView(views.APIView):
         })
 
 class CompanyListView(generics.ListAPIView):
+    """
+    Returns a list of all companies
+    """
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     
 class QuoteListView(generics.ListAPIView):
+    """
+    Returns a list of end-of-day quotes from the PSE
+
+    ### Parameters
+    - **stocks** - A comma separated list of stock symbols
+    - **from_date** - Start date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
+    - **to_date** - End date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
+
+    *NOTE: All the parameters are not required.*
+
+    ### Examples
+
+    Get the latest available end-of-day quote for a company
+
+        GET     /api/quotes/?stocks=BDO
+
+    Get the latest available end-of-day quote for multiple companies
+
+        GET     /api/quotes/?stocks=BDO,BPI,MBT
+
+    Get all available end-of-day quotes for all companies starting from the `from_date`
+
+        GET     /api/quotes/?from_date=2014-04-07
+
+    Get all available end-of-day quotes for all companies starting until the `end_date`
+        GET     /api/quotes/?to_date=2014-04-07
+        
+    Get all available end-of-day quotes for all companies between from the `from_date`, until the `end_date`
+
+        GET     /api/quotes/?from_date=2014-04-07&to_date=2014-11-11
+    """
     serializer_class = QuoteSerializer
     
     def get_queryset(self):

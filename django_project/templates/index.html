@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+            <h1>Open PSE Initiative</h1>
+            <p>
+            This is an open-source project which aims to store end-of-day quotes from the Philippines Stock Exchange and make it available to the public through a REST API.
+            </p>
+            <p><a href="{% url 'api_root' %}" class="btn btn-primary btn-lg">Browse the API</a></p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
