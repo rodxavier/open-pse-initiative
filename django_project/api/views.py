@@ -77,6 +77,7 @@ class QuoteListView(generics.ListAPIView):
         to_date = self.request.QUERY_PARAMS.get('to_date')
         if stocks is not None:
             stocks = stocks.split(',')
+            stocks = map(lambda x: x.upper(), stocks)
             items = items.filter(company__symbol__in=stocks)        
         if from_date is None and to_date is None:
             latest_quote_date = Quote.objects.latest('quote_date').quote_date
