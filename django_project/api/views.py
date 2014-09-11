@@ -24,17 +24,40 @@ class APIRootView(views.APIView):
         return Response({
             'version': 0.1,
             'resources': {
+                'indices': reverse('api_indices_list', request=request),
                 'companies': reverse('api_companies_list', request=request),
                 'quotes': reverse('api_quotes_list', request=request),
             }
         })
 
+class IndexListView(generics.ListAPIView):
+    """
+    Returns a list of all indices and industries
+    """
+    queryset = Company.objects.filter(is_index=True)
+    serializer_class = CompanySerializer
+
 class CompanyListView(generics.ListAPIView):
     """
     Returns a list of all companies
+    
+    ### Parameters
+    - **include_indices** - Takes 1(true)/0(false) as values to include indices. **Default: 0**
+    
+    ### Examples
+
+    Get the all companies including indices and industries
+
+        GET     /api/companies/?include_indices=1
     """
-    queryset = Company.objects.all()
     serializer_class = CompanySerializer
+    
+    def get_queryset(self):
+        items = Company.objects.all()
+        include_indices = self.request.QUERY_PARAMS.get('include_indices', 0)
+        if include_indices in [0, '0']:
+            items = items.filter(is_index=False)
+        return items
     
 class QuoteListView(generics.ListAPIView):
     """
@@ -45,7 +68,8 @@ class QuoteListView(generics.ListAPIView):
     - **from_date** - Start date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
     - **to_date** - End date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
 
-    *NOTE: All the parameters are not required.*
+    *NOTE: All the parameters are not required. When neither `from_date` and `to_date` are provided, 
+    the API returns the quotes from the latest available date.*
 
     ### Examples
 
