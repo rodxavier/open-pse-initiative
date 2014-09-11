@@ -23,4 +23,3 @@ class Command(BaseCommand):
             shutil.move(settings.NEW_QUOTES_DIR, settings.PREV_QUOTES_DIR)
         z.extractall(settings.NEW_QUOTES_DIR)
         logger.info('Downloaded quotes')
-        
