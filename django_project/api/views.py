@@ -1,10 +1,16 @@
+import json
 from datetime import datetime
 
+from django.conf import settings
+
+import requests
 from rest_framework import generics
+from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, XMLRenderer
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import views
 
+from common.utils import CustomList
 from companies.models import Company
 from quotes.models import Quote
 from serializers import CompanySerializer, QuoteSerializer
@@ -20,6 +26,8 @@ class APIRootView(views.APIView):
     
     Please send an email to [hello@rodxavier.com](mailto:hello@rodxavier.com) if you find any inaccuracies in the data.
     """
+    renderer_classes = (JSONRenderer, BrowsableAPIRenderer, XMLRenderer)
+    
     def get(self, request):
         return Response({
             'version': 0.1,
@@ -27,6 +35,7 @@ class APIRootView(views.APIView):
                 'indices': reverse('api_indices_list', request=request),
                 'companies': reverse('api_companies_list', request=request),
                 'quotes': reverse('api_quotes_list', request=request),
+                'ticker': reverse('api_ticker', request=request),
             }
         })
 
@@ -102,7 +111,7 @@ class QuoteListView(generics.ListAPIView):
         to_date = self.request.QUERY_PARAMS.get('to_date')
         if stocks is not None:
             stocks = stocks.split(',')
-            stocks = map(lambda x: x.upper(), stocks)
+            stocks = [x.upper() for x in stocks]
             items = items.filter(company__symbol__in=stocks)        
         if from_date is None and to_date is None:
             latest_quote_date = Quote.objects.latest('quote_date').quote_date
@@ -114,3 +123,52 @@ class QuoteListView(generics.ListAPIView):
             to_date = datetime.strptime(to_date, '%Y-%m-%d')
             items = items.filter(quote_date__lte=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
+        
+class TickerView(views.APIView):
+    """
+    Provides a near-realtime endpoint for quotes
+    
+    ### Parameters
+    - **stocks** - A comma separated list of stock symbols
+    
+    ### Examples
+
+    Get the latest available end-of-day quote for a company
+
+        GET     /api/quotes/?stocks=BPI
+    """
+    renderer_classes = (JSONRenderer, BrowsableAPIRenderer, XMLRenderer)
+    
+    def get(self, request):
+        r = requests.get(settings.TICKER_URL)
+        response = json.loads(r.content)
+        data = {}
+        items = []
+        stocks = self.request.QUERY_PARAMS.get('stocks')
+        if stocks is not None:
+            stocks = stocks.split(',')
+            stocks = [x.upper() for x in stocks]
+        for item in response:
+            if item['securitySymbol'] == 'Stock Update As of':
+                as_of = item['securityAlias']
+                as_of = datetime.strptime(as_of, '%m/%d/%Y %I:%M %p')
+                data['as_of'] = as_of.strftime('%Y-%m-%d %I:%M%p')
+            else:
+                quote = {}
+                quote['symbol'] = item['securitySymbol'].upper()
+                if Company.objects.filter(symbol=quote['symbol']).count() != 0:
+                    quote['name'] = Company.objects.get(symbol=quote['symbol']).name
+                else:
+                    quote['name'] = item['securityAlias'].title()
+                quote['percent_change'] = item['percChangeClose']
+                quote['price'] = item['lastTradedPrice']
+                quote['volume'] = item['totalVolume']
+                quote['indicator'] = item['indicator']
+                if stocks is not None:
+                    if quote['symbol'] in stocks:
+                        items.append(quote)
+                else:
+                    items.append(quote)
+        data['quotes'] = items
+        return Response(data)
+    

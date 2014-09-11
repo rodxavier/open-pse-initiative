@@ -157,6 +157,7 @@ PREV_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'old_quotes')
 NEW_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'new_quotes')
 HISTORICAL_QUOTES_PATH = os.path.join(NEW_QUOTES_DIR, 'psedata.csv')
 COMPANY_NAMES_PATH = os.path.join(NEW_QUOTES_DIR, 'COmpany Names.csv')
+TICKER_URL = 'http://pse.com.ph/stockMarket/home.html?method=getSecuritiesAndIndicesForPublic&ajax=true'
 
 # Django-rest-framework
 REST_FRAMEWORK = {
