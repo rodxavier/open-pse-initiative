@@ -2,6 +2,10 @@
 
 This is an open-source Django project that aims to store historical data from the Philippine Stock Exchange(PSE) and make it available to the public through a REST API.
 
+## Goals
+- Provide users way to obtain PSE data
+- Provide users way to visualize PSE data
+
 ## LICENSE
 
 The MIT License (MIT)

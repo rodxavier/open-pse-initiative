@@ -17,6 +17,8 @@ class APIRootView(views.APIView):
     - **json**
     - **xml**
     - **csv**
+    
+    Please send an email to [hello@rodxavier.com](mailto:hello@rodxavier.com) if you find any inaccuracies in the data.
     """
     def get(self, request):
         return Response({
