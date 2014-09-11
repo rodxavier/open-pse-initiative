@@ -8,6 +8,11 @@
             <p>
             This is an open-source project which aims to store end-of-day quotes from the Philippines Stock Exchange and make it available to the public through a REST API.
             </p>
+            <hr>
+            <p class="jumbotron-small">
+                Latest Quote Date: {{ latest_quote_date }}<br/>
+                Download: <a href="{% url 'api_quotes_list' %}?format=csv">csv</a>, <a href="{% url 'api_quotes_list' %}?format=json">json</a>, <a href="{% url 'api_quotes_list' %}?format=xml">xml</a>
+            </p>
             <p><a href="{% url 'api_root' %}" class="btn btn-primary btn-lg">Browse the API</a></p>
         </div>
     </div>
