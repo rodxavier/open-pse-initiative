@@ -1,0 +1,2 @@
+class CustomList(list):
+    pass

@@ -39,10 +39,16 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    
+    # 3rd-party Apps
+    'rest_framework',
+    
     # Apps
+    'common',
     'companies',
     'quotes',
-    'jobs'
+    'jobs',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -134,12 +140,26 @@ LOGGING = {
     },
 }
 
-
+# Quotes
 QUOTES_DROPBOX_DL_URL = 'https://www.dropbox.com/sh/1dluf0lawy9a7rm/fHREemAjWS?dl=1'
 PREV_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'old_quotes')
 NEW_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'new_quotes')
 HISTORICAL_QUOTES_PATH = os.path.join(NEW_QUOTES_DIR, 'psedata.csv')
 COMPANY_NAMES_PATH = os.path.join(NEW_QUOTES_DIR, 'COmpany Names.csv')
+
+# Django-rest-framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.XMLRenderer',
+        'rest_framework_csv.renderers.CSVRenderer',
+    )
+}
 
 try:
     from local_settings import *
