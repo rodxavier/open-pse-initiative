@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 from StringIO import StringIO
@@ -7,6 +8,8 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 import requests
+
+logger = logging.getLogger('jobs.management.commands')
 
 class Command(BaseCommand):
     help = 'Download the quotations zip file from Dropbox'
@@ -19,3 +22,5 @@ class Command(BaseCommand):
                 shutil.rmtree(settings.PREV_QUOTES_DIR)
             shutil.move(settings.NEW_QUOTES_DIR, settings.PREV_QUOTES_DIR)
         z.extractall(settings.NEW_QUOTES_DIR)
+        logger.info('Downloaded quotes')
+        
