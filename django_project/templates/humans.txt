@@ -1,0 +1,10 @@
+/* DEVELOPED AND MAINTAINED BY */
+	Developer: Rod Xavier Bondoc
+	Website: http://openpse.com
+	Contact: hello@rodxavier.com
+	Twitter: @rodxavier14
+	From: Manila, PH
+	
+/* 3rd PARTY TOOLS AND FRAMEWORKS */
+    Django
+    Django Rest Framework

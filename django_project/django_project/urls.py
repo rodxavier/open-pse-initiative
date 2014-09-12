@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^robots\.txt$', include('robots.urls')),
+    url(r'^humans\.txt$', TemplateView.as_view(template_name='humans.txt', content_type='text/plain')),
 )
 
 if settings.DEBUG:
