@@ -7,7 +7,8 @@ from django.views.generic import TemplateView
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name="index.html"), name="index"),
     url(r'^api/', include('api.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    url(r'^secret/', include(admin.site.urls)),
     url(r'^robots\.txt$', include('robots.urls')),
     url(r'^humans\.txt$', TemplateView.as_view(template_name='humans.txt', content_type='text/plain')),
 )

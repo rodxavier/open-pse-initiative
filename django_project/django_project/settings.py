@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'kronos',
     'robots',
+    'admin_honeypot',
     
     # Apps
     'common',
@@ -175,6 +176,9 @@ REST_FRAMEWORK = {
 
 # robots
 ROBOTS_USE_SITEMAP = False
+
+# django-admin-honeypot
+ADMIN_HONEYPOT_EMAIL_ADMINS = False
 
 try:
     from local_settings import *

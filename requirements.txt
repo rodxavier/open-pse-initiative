@@ -2,6 +2,7 @@ Django==1.7
 Markdown==2.4.1
 argparse==1.2.1
 certifi==14.05.14
+django-admin-honeypot==0.4.0
 django-filter==0.7
 django-kronos==0.4
 django-robots==1.0
