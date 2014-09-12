@@ -1,6 +1,6 @@
 /* DEVELOPED AND MAINTAINED BY */
 	Developer: Rod Xavier Bondoc
-	Website: http://openpse.com
+	Website: http://rodxavier.com
 	Contact: hello@rodxavier.com
 	Twitter: @rodxavier14
 	From: Manila, PH
