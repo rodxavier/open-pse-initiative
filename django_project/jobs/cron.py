@@ -5,8 +5,8 @@ from django.core.management import call_command
 
 import kronos
 
-@kronos.register('0 18 * * *')
-@kronos.register('0 0 * * *')
+@kronos.register('0 18 * * 1-5')
+@kronos.register('0 0 * * 2-6')
 def run_daily_job():
     try:
         logger = logging.getLogger('jobs.management.commands')
