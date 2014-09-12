@@ -36,12 +36,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-    
+    'django.contrib.sites',    
     
     # 3rd-party Apps
     'rest_framework',
     'kronos',
+    'robots',
     
     # Apps
     'common',
@@ -151,7 +151,7 @@ LOGGING = {
     },
 }
 
-# Quotes
+# quotes
 QUOTES_DROPBOX_DL_URL = 'https://www.dropbox.com/sh/1dluf0lawy9a7rm/fHREemAjWS?dl=1'
 PREV_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'old_quotes')
 NEW_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'new_quotes')
@@ -172,6 +172,9 @@ REST_FRAMEWORK = {
         'rest_framework_csv.renderers.CSVRenderer',
     )
 }
+
+# robots
+ROBOTS_USE_SITEMAP = False
 
 try:
     from local_settings import *
