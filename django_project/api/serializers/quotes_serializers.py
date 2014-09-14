@@ -1,14 +1,8 @@
 from rest_framework import serializers
 
 from common.utils import CustomList
-from companies.models import Company
 from quotes.models import Quote
 
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = ('symbol', 'name',)
-        
 class QuoteSerializer(serializers.ModelSerializer):    
     name = serializers.SerializerMethodField('get_company_name')
     symbol = serializers.SerializerMethodField('get_company_symbol')

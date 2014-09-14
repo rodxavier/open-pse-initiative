@@ -2,72 +2,19 @@ import json
 from datetime import datetime
 
 from django.conf import settings
+from django.core.paginator import Paginator
 
 import requests
 from rest_framework import generics
+from rest_framework import views
+from rest_framework.pagination import PaginationSerializer
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, XMLRenderer
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import views
 
-from common.utils import CustomList
-from companies.models import Company
 from quotes.models import Quote
-from serializers import CompanySerializer, QuoteSerializer
-    
-class APIRootView(views.APIView):
-    """
-    A Public API that provides end-of-day quotes from the Philippine Stock Exchange(PSE).
-    
-    ### Supported formats
-    - **json**
-    - **xml**
-    - **csv**
-    
-    Please send an email to [hello@rodxavier.com](mailto:hello@rodxavier.com) if you find any inaccuracies in the data.
-    """
-    renderer_classes = (JSONRenderer, BrowsableAPIRenderer, XMLRenderer)
-    
-    def get(self, request):
-        return Response({
-            'version': 0.1,
-            'resources': {
-                'indices': reverse('api_indices_list', request=request),
-                'companies': reverse('api_companies_list', request=request),
-                'quotes': reverse('api_quotes_list', request=request),
-                'ticker': reverse('api_ticker', request=request),
-            }
-        })
+from api.serializers import QuoteSerializer
 
-class IndexListView(generics.ListAPIView):
-    """
-    Returns a list of all indices and industries
-    """
-    queryset = Company.objects.filter(is_index=True)
-    serializer_class = CompanySerializer
-
-class CompanyListView(generics.ListAPIView):
-    """
-    Returns a list of all companies
-    
-    ### Parameters
-    - **include_indices** - Takes 1(true)/0(false) as values to include indices. **Default: 0**
-    
-    ### Examples
-
-    Get the all companies including indices and industries
-
-        GET     /api/companies/?include_indices=1
-    """
-    serializer_class = CompanySerializer
-    
-    def get_queryset(self):
-        items = Company.objects.all()
-        include_indices = self.request.QUERY_PARAMS.get('include_indices', 0)
-        if include_indices in [0, '0']:
-            items = items.filter(is_index=False)
-        return items
-    
 class QuoteListView(generics.ListAPIView):
     """
     Returns a list of end-of-day quotes from the PSE
@@ -75,7 +22,7 @@ class QuoteListView(generics.ListAPIView):
     ### Parameters
     - **stocks** - A comma separated list of stock symbols
     - **from_date** - Start date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
-    - **to_date** - End date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
+    - **to_date** - End date of end-of-day quotes. This is exclusive. **Format: YYYY-MM-DD**
 
     *NOTE: All the parameters are not required. When neither `from_date` and `to_date` are provided, 
     the API returns the quotes from the latest available date.*
@@ -121,7 +68,7 @@ class QuoteListView(generics.ListAPIView):
             items = items.filter(quote_date__gte=from_date)
         if to_date is not None:
             to_date = datetime.strptime(to_date, '%Y-%m-%d')
-            items = items.filter(quote_date__lte=to_date)
+            items = items.filter(quote_date__lt=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
         
 class TickerView(views.APIView):
@@ -171,4 +118,30 @@ class TickerView(views.APIView):
                     items.append(quote)
         data['quotes'] = items
         return Response(data)
+        
+class DailyQuotesDownloadView(views.APIView):
+    paginate_by = 100
     
+    def get(self, request):
+        base_url = reverse('api_quotes_list', request=request)
+        page_num = self.request.QUERY_PARAMS.get('page', 1)
+        quote_dates = Quote.objects.order_by('-quote_date').values_list('quote_date', flat=True).distinct()
+        paginator = Paginator(quote_dates, self.paginate_by)
+        page = paginator.page(page_num)
+        items = []
+        for obj in page.object_list:
+            date_string = obj.strftime('%Y-%m-%d')
+            item = {
+                'quote_date': date_string,
+                'csv_url': self.generate_download_url(base_url, date_string, 'csv'),
+                'json_url': self.generate_download_url(base_url, date_string, 'json'),
+                'xml_url': self.generate_download_url(base_url, date_string, 'xml'),
+            }
+            items.append(item)
+        page.object_list = items
+        serializer = PaginationSerializer(instance=page, context={'request': request})
+        data = serializer.data
+        return Response(data)
+        
+    def generate_download_url(self, base_url, quote_date, format_type):
+        return '{0}?from_date={1}&end_date={1}&format={2}'.format(base_url, quote_date, format_type)
