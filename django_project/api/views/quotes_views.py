@@ -2,12 +2,15 @@ import json
 from datetime import datetime
 
 from django.conf import settings
+from django.core.paginator import Paginator
 
 import requests
 from rest_framework import generics
 from rest_framework import views
+from rest_framework.pagination import PaginationSerializer
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, XMLRenderer
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from quotes.models import Quote
 from api.serializers import QuoteSerializer
@@ -19,7 +22,7 @@ class QuoteListView(generics.ListAPIView):
     ### Parameters
     - **stocks** - A comma separated list of stock symbols
     - **from_date** - Start date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
-    - **to_date** - End date of end-of-day quotes. This is inclusive. **Format: YYYY-MM-DD**
+    - **to_date** - End date of end-of-day quotes. This is exclusive. **Format: YYYY-MM-DD**
 
     *NOTE: All the parameters are not required. When neither `from_date` and `to_date` are provided, 
     the API returns the quotes from the latest available date.*
@@ -65,7 +68,7 @@ class QuoteListView(generics.ListAPIView):
             items = items.filter(quote_date__gte=from_date)
         if to_date is not None:
             to_date = datetime.strptime(to_date, '%Y-%m-%d')
-            items = items.filter(quote_date__lte=to_date)
+            items = items.filter(quote_date__lt=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
         
 class TickerView(views.APIView):
@@ -115,3 +118,30 @@ class TickerView(views.APIView):
                     items.append(quote)
         data['quotes'] = items
         return Response(data)
+        
+class DailyQuotesDownloadView(views.APIView):
+    paginate_by = 100
+    
+    def get(self, request):
+        base_url = reverse('api_quotes_list', request=request)
+        page_num = self.request.QUERY_PARAMS.get('page', 1)
+        quote_dates = Quote.objects.order_by('-quote_date').values_list('quote_date', flat=True).distinct()
+        paginator = Paginator(quote_dates, self.paginate_by)
+        page = paginator.page(page_num)
+        items = []
+        for obj in page.object_list:
+            date_string = obj.strftime('%Y-%m-%d')
+            item = {
+                'quote_date': date_string,
+                'csv_url': self.generate_download_url(base_url, date_string, 'csv'),
+                'json_url': self.generate_download_url(base_url, date_string, 'json'),
+                'xml_url': self.generate_download_url(base_url, date_string, 'xml'),
+            }
+            items.append(item)
+        page.object_list = items
+        serializer = PaginationSerializer(instance=page, context={'request': request})
+        data = serializer.data
+        return Response(data)
+        
+    def generate_download_url(self, base_url, quote_date, format_type):
+        return '{0}?from_date={1}&end_date={1}&format={2}'.format(base_url, quote_date, format_type)
