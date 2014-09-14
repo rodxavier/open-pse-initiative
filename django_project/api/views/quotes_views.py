@@ -63,10 +63,13 @@ class QuoteListView(generics.ListAPIView):
         if from_date is None and to_date is None:
             latest_quote_date = Quote.objects.latest('quote_date').quote_date
             items = items.filter(quote_date=latest_quote_date)
-        if from_date is not None:
+        if from_date is not None and to_date is not None:
+            quote_date = datetime.strptime(from_date, '%Y-%m-%d')
+            items = items.filter(quote_date=quote_date)
+        elif from_date is not None:
             from_date = datetime.strptime(from_date, '%Y-%m-%d')
             items = items.filter(quote_date__gte=from_date)
-        if to_date is not None:
+        elif to_date is not None:
             to_date = datetime.strptime(to_date, '%Y-%m-%d')
             items = items.filter(quote_date__lt=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
