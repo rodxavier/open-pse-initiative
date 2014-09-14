@@ -63,15 +63,16 @@ class QuoteListView(generics.ListAPIView):
         if from_date is None and to_date is None:
             latest_quote_date = Quote.objects.latest('quote_date').quote_date
             items = items.filter(quote_date=latest_quote_date)
-        if from_date is not None and to_date is not None:
+        if from_date is not None and to_date is not None and from_date == to_date:
             quote_date = datetime.strptime(from_date, '%Y-%m-%d')
             items = items.filter(quote_date=quote_date)
-        elif from_date is not None:
-            from_date = datetime.strptime(from_date, '%Y-%m-%d')
-            items = items.filter(quote_date__gte=from_date)
-        elif to_date is not None:
-            to_date = datetime.strptime(to_date, '%Y-%m-%d')
-            items = items.filter(quote_date__lt=to_date)
+        else:
+            if from_date is not None:
+                from_date = datetime.strptime(from_date, '%Y-%m-%d')
+                items = items.filter(quote_date__gte=from_date)
+            if to_date is not None:
+                to_date = datetime.strptime(to_date, '%Y-%m-%d')
+                items = items.filter(quote_date__lt=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
         
 class TickerView(views.APIView):
@@ -147,4 +148,4 @@ class DailyQuotesDownloadView(views.APIView):
         return Response(data)
         
     def generate_download_url(self, base_url, quote_date, format_type):
-        return '{0}?from_date={1}&end_date={1}&format={2}'.format(base_url, quote_date, format_type)
+        return '{0}?from_date={1}&to_date={1}&format={2}'.format(base_url, quote_date, format_type)
