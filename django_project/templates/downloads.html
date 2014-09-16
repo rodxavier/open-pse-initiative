@@ -21,9 +21,9 @@
             <tbody>
                 <tr dir-paginate="obj in objs | itemsPerPage: 50" total-items="total">
                     <td data-ng-bind="obj.quote_date"></td>
-                    <td><a href="{{obj.csv_url}}">csv</a></td>
-                    <td><a href="{{obj.json_url}}">json</a></td>
-                    <td><a href="{{obj.xml_url}}">xml</a></td>
+                    <td><a href="{{obj.csv_url}}" target="_blank">csv</a></td>
+                    <td><a href="{{obj.json_url}}" target="_blank">json</a></td>
+                    <td><a href="{{obj.xml_url}}" target="_blank">xml</a></td>
                 </tr>
             </tbody>
         </table> 
