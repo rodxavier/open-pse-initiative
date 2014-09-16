@@ -6,3 +6,4 @@ db*
 log*/*
 *.log
 wsgi.py
+django_project/components/*
