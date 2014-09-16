@@ -8,6 +8,7 @@ controllers.controller('QuoteDownloadsController', function ($scope, $http, $win
     $scope.objsPerPage = 50;
     $scope.urlParams = {}
     getUrlParams();
+    downloadsService.getPage($scope.urlParams.page)
     
     $scope.pagination = {
         current: $scope.urlParams.page
