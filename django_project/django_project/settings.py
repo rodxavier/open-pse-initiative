@@ -198,7 +198,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap',
     'angular-utils-pagination',
     'angular-resource',
-    'angular-route',
 )
 
 try:
