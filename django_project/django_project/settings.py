@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'kronos',
     'robots',
     'admin_honeypot',
+    'djangobower',
     
     # Apps
     'common',
@@ -102,6 +103,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static_dev'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+
 )
 
 TEMPLATE_DIRS = (
@@ -179,6 +187,19 @@ ROBOTS_USE_SITEMAP = False
 
 # django-admin-honeypot
 ADMIN_HONEYPOT_EMAIL_ADMINS = False
+
+# django-bower
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'underscore',
+    'angular',
+    'bootstrap',
+    'angular-utils-pagination',
+    'angular-resource',
+    'angular-route',
+)
 
 try:
     from local_settings import *

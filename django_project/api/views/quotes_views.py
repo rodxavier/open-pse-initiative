@@ -125,7 +125,7 @@ class TickerView(views.APIView):
         return Response(data)
         
 class DailyQuotesDownloadView(views.APIView):
-    paginate_by = 100
+    paginate_by = 50
     
     def get(self, request):
         base_url = reverse('api_quotes_list', request=request)
