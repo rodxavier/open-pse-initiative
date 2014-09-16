@@ -1,4 +1,4 @@
-# Open PSE Initiative
+# [Open PSE Initiative](http://openpse.com)
 
 This is an open-source Django project that aims to store historical data from the Philippine Stock Exchange(PSE) and make it available to the public through a REST API.
 
