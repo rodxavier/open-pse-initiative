@@ -19,8 +19,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr dir-paginate="obj in objs | itemsPerPage: 15" total-items="total">
-                    <td>{{obj.quote_date}}</td>
+                <tr dir-paginate="obj in objs | itemsPerPage: 50" total-items="total">
+                    <td data-ng-bind="obj.quote_date"></td>
                     <td><a href="{{obj.csv_url}}">csv</a></td>
                     <td><a href="{{obj.json_url}}">json</a></td>
                     <td><a href="{{obj.xml_url}}">xml</a></td>
@@ -30,7 +30,7 @@
         {% endverbatim %}
         </div>
  	    <div class="col-md-6 col-md-offset-3 col-centered">
- 	        <dir-pagination-controls  on-page-change="pageChanged(newPageNumber)" template-url="{% static "angular-utils-pagination/dirPagination.tpl.html" %}"></dir-pagination-controls>
+ 	        <dir-pagination-controls on-page-change="pageChanged(newPageNumber)" template-url="{% static "angular-utils-pagination/dirPagination.tpl.html" %}"></dir-pagination-controls>
  	    </div>
  	</div>
 </div>
@@ -40,4 +40,5 @@
 <script src="{% static "angular-utils-pagination/dirPagination.js" %}"></script>
 <script src="{% static "js/app.js" %}"></script>
 <script src="{% static "js/controllers.js" %}"></script>
+<script src="{% static "js/services.js" %}"></script>
 {% endblock extra_js %}

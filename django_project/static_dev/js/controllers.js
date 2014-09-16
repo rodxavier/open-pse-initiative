@@ -1,25 +1,33 @@
 'use strict';
 
-var controllers = angular.module('openPSEControllers', []);
-controllers.controller('QuoteDownloadsController', function ($scope, $http) {
+var controllers = angular.module('openPSEApp.controllers', []);
+
+controllers.controller('QuoteDownloadsController', function ($scope, $http, $window, downloadsService) {
     $scope.objs = [];
     $scope.total = 0;
-    $scope.objsPerPage = 15;
-    getResultsPage(1);
-
+    $scope.objsPerPage = 50;
+    $scope.urlParams = {}
+    getUrlParams();
+    
     $scope.pagination = {
-        current: 1
+        current: $scope.urlParams.page
     };
     
     $scope.pageChanged = function(newPage) {
-        getResultsPage(newPage);
+        downloadsService.getPage(newPage).then(function(result) {
+            $scope.objs = result.data.results;
+            $scope.total = result.data.count;
+        });
     };
     
-    function getResultsPage(pageNumber) {
-        $http.get('/api/downloads/?format=json&page=' + pageNumber)
-            .then(function(result) {
-                $scope.objs = result.data.results;
-                $scope.total = result.data.count;
-            });
+    function getUrlParams(){
+        if($window.location.search){
+            var parts = $window.location.search.substring(1).split('&');
+            for (var i = 0; i < parts.length; i++) {
+                var nv = parts[i].split('=');
+                if (!nv[0]) continue;
+                $scope.urlParams[nv[0]] = nv[1] || true;
+            }
+        }
     }
 });

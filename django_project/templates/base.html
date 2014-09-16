@@ -37,6 +37,20 @@
                                     </a>
                                 {% endblock branding %}
                             </span>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">API <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="api">
+                                            <li><a href="{% url 'api_root' %}">API Root</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{% url 'api_indices_list' %}">Indices</a></li>
+                                            <li><a href="{% url 'api_companies_list' %}">Companies</a></li>
+                                            <li><a href="{% url 'api_quotes_list' %}">Quotes</a></li>
+                                            <li><a href="{% url 'api_ticker' %}">Ticker</a></li>
+                                        </ul>
+                                </li>
+                                <li><a href="{% url 'downloads' %}">Downloads</a></li>
+                            </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="https://github.com/rodxavier/open-pse-initiative">View on Github</a></li>
                             </ul>
@@ -67,7 +81,6 @@
             <script src="{% static "underscore/underscore-min.js" %}"></script>
             <script src="{% static "angular/angular.min.js" %}"></script>
             <script src="{% static "angular-resource/angular-resource.min.js" %}"></script>
-            <script src="{% static "angular-route/angular-route.min.js" %}"></script>
             {% block extra_js %}
             {% endblock extra_js %}
         {% endblock script %}
