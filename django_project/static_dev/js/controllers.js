@@ -9,7 +9,8 @@ controllers.controller('QuoteDownloadsController', function ($scope, $http, $win
     $scope.urlParams = {}
     getUrlParams();
     $scope.pageNum = typeof $scope.urlParams.page != 'undefined' ? $scope.urlParams.page : 1;
-    downloadsService.getPage($scope.pageNum)
+    console.log($scope.pageNum);
+    downloadsService.getPage($scope.pageNum);
     
     $scope.pagination = {
         current: $scope.pageNum
