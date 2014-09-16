@@ -2,18 +2,12 @@
 
 var controllers = angular.module('openPSEApp.controllers', []);
 
-controllers.controller('QuoteDownloadsController', function ($scope, $http, $window, downloadsService) {
+controllers.controller('QuoteDownloadsController', function ($scope, $http, downloadsService) {
     $scope.objs = [];
     $scope.total = 0;
     $scope.objsPerPage = 50;
-    $scope.urlParams = {}
-    getUrlParams();
-    $scope.pageNum = typeof $scope.urlParams.page != 'undefined' ? $scope.urlParams.page : 1;
-    console.log($scope.pageNum);
-    downloadsService.getPage($scope.pageNum);
-    
     $scope.pagination = {
-        current: $scope.pageNum
+        current: 1
     };
     
     $scope.pageChanged = function(newPage) {
@@ -23,14 +17,6 @@ controllers.controller('QuoteDownloadsController', function ($scope, $http, $win
         });
     };
     
-    function getUrlParams(){
-        if($window.location.search){
-            var parts = $window.location.search.substring(1).split('&');
-            for (var i = 0; i < parts.length; i++) {
-                var nv = parts[i].split('=');
-                if (!nv[0]) continue;
-                $scope.urlParams[nv[0]] = nv[1] || true;
-            }
-        }
-    }
+    // Initialize Data
+    $scope.pageChanged(1);
 });
