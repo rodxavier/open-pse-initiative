@@ -7,6 +7,7 @@ controllers.controller('QuoteDownloadsController', function ($scope, $http, $win
     $scope.total = 0;
     $scope.objsPerPage = 50;
     $scope.urlParams = {}
+    console.log($scope.urlParams.page);
     $scope.pageNum = typeof $scope.urlParams.page != 'undefined' ? $scope.urlParams.page : 1;
     getUrlParams();
     downloadsService.getPage($scope.pageNum)
