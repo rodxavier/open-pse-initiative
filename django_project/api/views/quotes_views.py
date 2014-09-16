@@ -12,6 +12,7 @@ from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, XMLRend
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
+from companies.models import Company
 from quotes.models import Quote
 from api.serializers import QuoteSerializer
 
