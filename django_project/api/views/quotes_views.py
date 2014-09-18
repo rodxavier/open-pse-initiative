@@ -57,24 +57,40 @@ class QuoteListView(generics.ListAPIView):
         stocks = self.request.QUERY_PARAMS.get('stocks')
         from_date = self.request.QUERY_PARAMS.get('from_date')
         to_date = self.request.QUERY_PARAMS.get('to_date')
+        self.csv_filename =  'quotes_'
         if stocks is not None:
             stocks = stocks.split(',')
             stocks = [x.upper() for x in stocks]
+            self.csv_filename += '_'.join(stocks) + '_'
             items = items.filter(company__symbol__in=stocks)        
         if from_date is None and to_date is None:
             latest_quote_date = Quote.objects.latest('quote_date').quote_date
+            self.csv_filename += latest_quote_date.strftime('%Y-%m-%d')
             items = items.filter(quote_date=latest_quote_date)
-        if from_date is not None and to_date is not None and from_date == to_date:
+        elif from_date == to_date:
+            self.csv_filename += from_date
             quote_date = datetime.strptime(from_date, '%Y-%m-%d')
             items = items.filter(quote_date=quote_date)
         else:
             if from_date is not None:
+                self.csv_filename += 'from_' + from_date
                 from_date = datetime.strptime(from_date, '%Y-%m-%d')
                 items = items.filter(quote_date__gte=from_date)
             if to_date is not None:
+                prefix = '_' if from_date is not None else ''
+                self.csv_filename += prefix + 'to_' + to_date
                 to_date = datetime.strptime(to_date, '%Y-%m-%d')
                 items = items.filter(quote_date__lt=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
+        
+    def list(self, request, *args, **kwargs):
+        response = super(generics.ListAPIView, self).list(request, args, kwargs)
+        ret_format = self.request.QUERY_PARAMS.get('format')
+        if ret_format == 'csv':
+            filename = self.csv_filename + '.csv'
+            response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
+        return response
+        
         
 class TickerView(views.APIView):
     """
