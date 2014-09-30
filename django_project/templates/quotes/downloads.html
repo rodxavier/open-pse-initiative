@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load bootstrap_pagination %}
+{% block content %}
+<div class="container">
+ 	<div class="row">
+ 	    <div class="col-md-12">
+ 	        <h1>End-of-Day Quotes Downloads</h1>
+ 	    </div>
+ 	</div>
+ 	<hr>
+ 	<div class="row">
+ 	    <div class="col-md-12">
+     	<table class="table table-striped table-hover">
+            <thead>
+                <tr class="success">
+                    <th>Date</th>
+                    <th colspan=3>Download URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in object_list %}
+                <tr>
+                    <td>{{ obj.quote_date }}</td>
+                    <td><a href="{{ obj.csv_url }}" target="_blank">csv</a></td>
+                    <td><a href="{{ obj.json_url }}" target="_blank">json</a></td>
+                    <td><a href="{{ obj.xml_url }}" target="_blank">xml</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center center-block">
+            {% bootstrap_paginate page_obj range=10 show_first_last="true" centered="true" %}
+ 	    </div>
+ 	</div>
+</div>
+{% endblock content %}
