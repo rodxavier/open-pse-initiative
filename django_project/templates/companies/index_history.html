@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block seo_meta %}
+<meta name="description" content="Philippine Stock Index History" />
+<meta name="keywords" content="Philippine Stock Index History, Philippine Stock Exchange, PSE, PSE Historical Data" />
+{% endblock seo_meta %}
+
+{% block content %}
+<div class="container">
+ 	<div class="row">
+ 	    <div class="col-md-12">
+ 	        <h1>Index History</h1>
+ 	    </div>
+ 	</div>
+ 	<hr>
+ 	<div class="row">
+ 	    <div class="col-md-12">
+ 	        <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                {% for obj in object_list %}
+                <li {% if forloop.first %}class="active"{% endif %}><a href="#{{ obj.readable_name|lower }}" role="tab" data-toggle="tab">{{ obj.readable_name }}</a></li>
+                {% endfor %}
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">                
+                {% for obj in object_list %}
+                <div class="tab-pane{% if forloop.first %} active{% endif %}" id="{{ obj.readable_name|lower }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span><strong>52-week High:</strong> {{ obj.year_high }}</span><br />
+                            <span><strong>52-week Low:</strong> {{ obj.year_low }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr class="success">
+                                        <th>Date</th>
+                                        <th>Open</th>
+                                        <th>High</th>
+                                        <th>Low</th>
+                                        <th>Close</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for quote in obj.last_thirty_quotes %}
+                                    <tr>
+                                        <td>{{ quote.quote_date }}</td>
+                                        <td>{{ quote.price_open }}</td>
+                                        <td>{{ quote.price_high }}</td>
+                                        <td>{{ quote.price_low }}</td>
+                                        <td>{{ quote.price_close }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

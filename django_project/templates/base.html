@@ -6,8 +6,10 @@
 
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <meta name="author" content="Rod Xavier Bondoc" />
+            {% block seo_meta %}
             <meta name="description" content="Open-source Philippine Stock Exchange Data" />
-            <meta name="keywords" content="Philippine Stock Exchange, PSE, PSE API, Stock Market, PSE Historical Data">
+            <meta name="keywords" content="Philippine Stock Exchange, PSE, PSE API, Stock Market, PSE Historical Data" />
+            {% endblock seo_meta %}
             {% block meta %}
             <meta name="robots" content="index,follow" />
             {% endblock meta %}
@@ -43,9 +45,21 @@
                             </span>
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools <span class="caret"></span></a>
-                                        <ul class="dropdown-menu" aria-labelledby="tools">
-                                            <li><a href="{% url 'companies_list' %}">Listed Company Directory</a></li>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Market <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="market">
+                                            <li><a href="{% url 'index_history' %}">Index History</a></li>
+                                        </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Companies <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="companies">
+                                            <li><a href="{% url 'companies_list' %}">Directory</a></li>
+                                        </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Quotes <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="quotes">
+                                            <li><a href="{% url 'quotes_download' %}">Downloads</a></li>
                                         </ul>
                                 </li>
                                 <li class="dropdown">
@@ -59,7 +73,6 @@
                                             <li><a href="{% url 'api_ticker' %}">Ticker</a></li>
                                         </ul>
                                 </li>
-                                <li><a href="{% url 'quotes_download' %}">Downloads</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li>

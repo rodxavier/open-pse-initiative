@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+from companies.views import IndexHistoryView
+
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
     url(r'^about$', TemplateView.as_view(template_name='about.html'), name='about'),
@@ -12,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
     url(r'^quotes/', include('quotes.urls')),
     url(r'^companies/', include('companies.urls')),
+    url(r'^market/index-history$', IndexHistoryView.as_view(), name='index_history'),
     
     url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
     url(r'^secret/', include(admin.site.urls)),
