@@ -13,6 +13,7 @@ def run_daily_job():
         logger.info('Starting daily_job')
         call_command('download_quotes')
         call_command('create_daily_quotes')
+        call_command('update_listed_companies')
         logger.info('Finished daily_job')
     except Exception, e:
         logger.error(e)
