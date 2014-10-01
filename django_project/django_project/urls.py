@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     
     url(r'^api/', include('api.urls')),
     url(r'^quotes/', include('quotes.urls')),
+    url(r'^companies/', include('companies.urls')),
     
     url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
     url(r'^secret/', include(admin.site.urls)),
