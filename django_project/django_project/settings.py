@@ -127,6 +127,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'quotes.context_processors.latest_quote_date',
+    'common.context_processors.market_status',
 )
 
 # Logging
