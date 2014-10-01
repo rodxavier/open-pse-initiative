@@ -43,6 +43,12 @@
                             </span>
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="tools">
+                                            <li><a href="{% url 'companies_list' %}">Listed Company Directory</a></li>
+                                        </ul>
+                                </li>
+                                <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">API <span class="caret"></span></a>
                                         <ul class="dropdown-menu" aria-labelledby="api">
                                             <li><a href="{% url 'api_root' %}">API Root</a></li>
@@ -56,7 +62,11 @@
                                 <li><a href="{% url 'quotes_download' %}">Downloads</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="https://github.com/rodxavier/open-pse-initiative">View on Github</a></li>
+                                <li>
+                                    <div class="btn-group navbar-btn">
+                                        <button class="btn disabled {{ market_status_class }}"><i class="fa fa-line-chart"></i> MARKET {{ market_status }}</button>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>

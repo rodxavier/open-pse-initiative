@@ -127,6 +127,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'quotes.context_processors.latest_quote_date',
+    'common.context_processors.market_status',
 )
 
 # Logging
@@ -169,6 +170,7 @@ NEW_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'new_quotes')
 HISTORICAL_QUOTES_PATH = os.path.join(NEW_QUOTES_DIR, 'psedata.csv')
 COMPANY_NAMES_PATH = os.path.join(NEW_QUOTES_DIR, 'COmpany Names.csv')
 TICKER_URL = 'http://pse.com.ph/stockMarket/home.html?method=getSecuritiesAndIndicesForPublic&ajax=true'
+COMPANY_LIST_URL = 'http://www.pse.com.ph/stockMarket/companyInfoSecurityProfile.html?method=getListedRecords&common=no&ajax=true'
 
 # Django-rest-framework
 REST_FRAMEWORK = {
