@@ -18,7 +18,7 @@ def run_daily_job():
     except Exception, e:
         logger.error(e)
         
-@kronos.register('0 0 * * *')
+@kronos.register('0 1 * * *')
 def run_backup_db():
     try:
         logger = logging.getLogger('jobs.management.commands')
