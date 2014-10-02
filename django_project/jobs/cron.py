@@ -17,3 +17,13 @@ def run_daily_job():
         logger.info('Finished daily_job')
     except Exception, e:
         logger.error(e)
+        
+@kronos.register('0 0 * * *')
+def run_backup_db():
+    try:
+        logger = logging.getLogger('jobs.management.commands')
+        logger.info('Starting db backup')
+        call_command('dbbackup')
+        logger.info('Finished db backup')
+    except Exception, e:
+        logger.error(e)
