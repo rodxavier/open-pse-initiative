@@ -46,10 +46,10 @@
                                     {% for quote in obj.last_thirty_quotes %}
                                     <tr>
                                         <td>{{ quote.quote_date }}</td>
-                                        <td>{{ quote.price_open }}</td>
-                                        <td>{{ quote.price_high }}</td>
-                                        <td>{{ quote.price_low }}</td>
-                                        <td>{{ quote.price_close }}</td>
+                                        <td>{{ quote.price_open|floatformat:2 }}</td>
+                                        <td>{{ quote.price_high|floatformat:2 }}</td>
+                                        <td>{{ quote.price_low|floatformat:2 }}</td>
+                                        <td>{{ quote.price_close|floatformat:2 }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
