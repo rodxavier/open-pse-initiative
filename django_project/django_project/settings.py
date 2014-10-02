@@ -24,6 +24,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = [
     '.openpse.com',
+    'django-dbbackup',
 ]
 
 
