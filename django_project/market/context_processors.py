@@ -1,5 +1,7 @@
 from datetime import datetime, time
 
+from market.models import NonTradingDay
+
 def market_status(request):
     market_status = 'OPEN'
     market_status_class = 'btn-success'
@@ -8,7 +10,7 @@ def market_status(request):
     market_recess_start = time(12, 0)
     market_recess_end = time(13, 30)
     dt = datetime.now()
-    if dt.isoweekday() >= 1 and dt.isoweekday() <= 5:
+    if dt.isoweekday() >= 1 and dt.isoweekday() <= 5 and not NonTradingDay.objects.filter(non_trading_date=dt.date()).exists():
         if dt.time() >= market_open and dt.time() < market_close:
             if dt.time() >= market_recess_start and dt.time() < market_recess_end:
                 market_status = 'RECESS'
