@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'admin_honeypot',
     'djangobower',
     'bootstrap_pagination',
+    'dbbackup',
     
     # Apps
     'common',
