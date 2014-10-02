@@ -1,7 +1,17 @@
 #content {
     margin-top: 80px;
+    padding-bottom:100px;
 }
 
 .jumbotron .jumbotron-small {
-  font-size: 16px;
+    font-size: 16px;
+}
+
+#footer {
+    height: 35px;
+    width: 100%;
+}
+
+#footer span {
+    font-size: 16px;
 }

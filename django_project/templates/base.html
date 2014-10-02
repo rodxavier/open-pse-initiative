@@ -6,8 +6,10 @@
 
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <meta name="author" content="Rod Xavier Bondoc" />
+            {% block seo_meta %}
             <meta name="description" content="Open-source Philippine Stock Exchange Data" />
-            <meta name="keywords" content="Philippine Stock Exchange, PSE, PSE API, Stock Market, PSE Historical Data">
+            <meta name="keywords" content="Philippine Stock Exchange, PSE, PSE API, Stock Market, PSE Historical Data" />
+            {% endblock seo_meta %}
             {% block meta %}
             <meta name="robots" content="index,follow" />
             {% endblock meta %}
@@ -19,13 +21,14 @@
                     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
                     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
                 {% endblock bootstrap_theme %}
+                <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
             {% endblock style %}
 
         {% endblock head %}
     </head>
 
     {% block body %}
-    <body class="{% block bodyclass %}{% endblock %} container">
+    <body class="{% block bodyclass %}{% endblock %}">
 
         <div class="wrapper">
 
@@ -42,6 +45,24 @@
                             </span>
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Market <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="market">
+                                            <li><a href="{% url 'index_history' %}">Index History</a></li>
+                                        </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Companies <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="companies">
+                                            <li><a href="{% url 'companies_list' %}">Directory</a></li>
+                                        </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Quotes <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" aria-labelledby="quotes">
+                                            <li><a href="{% url 'quotes_download' %}">Downloads</a></li>
+                                        </ul>
+                                </li>
+                                <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">API <span class="caret"></span></a>
                                         <ul class="dropdown-menu" aria-labelledby="api">
                                             <li><a href="{% url 'api_root' %}">API Root</a></li>
@@ -52,10 +73,13 @@
                                             <li><a href="{% url 'api_ticker' %}">Ticker</a></li>
                                         </ul>
                                 </li>
-                                <li><a href="{% url 'downloads' %}">Downloads</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="https://github.com/rodxavier/open-pse-initiative">View on Github</a></li>
+                                <li>
+                                    <div class="btn-group navbar-btn">
+                                        <button class="btn disabled {{ market_status_class }}"><i class="fa fa-line-chart"></i> MARKET {{ market_status }}</button>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -77,25 +101,48 @@
             </div>
             <!-- END Content -->
         </div><!-- ./wrapper -->
-
+        
+        <div id="footer">
+            <div class="container">
+                <div class="row vcenter">
+                    <div class="col-md-6">
+                        <span><a href="{% url 'about' %}">About</a> | <span><a href="{% url 'terms' %}">Terms and Conditions</a>
+                    </div>
+                    <div class="col-md-4 col-md-offset-2">
+                        <span>Copyright &copy; 2014 OpenPSE. All rights reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
         {% block script %}
             <script src="{% static "jquery/dist/jquery.min.js" %}"></script>
             <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
             <script src="{% static "underscore/underscore-min.js" %}"></script>
-            <script src="{% static "angular/angular.min.js" %}"></script>
-            <script src="{% static "angular-resource/angular-resource.min.js" %}"></script>
             {% block extra_js %}
             {% endblock extra_js %}
         {% endblock script %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                var docHeight = $(window).height();
+                var footerHeight = $('#footer').height();
+                var footerTop = $('#footer').position().top + footerHeight;
+
+                if (footerTop < docHeight) {
+                    $('#footer').css('margin-top', (docHeight - footerTop) + 'px');
+                }
+            });        
+        </script>
         <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-54747060-2', 'auto');
-          ga('send', 'pageview');
-
+            ga('create', 'UA-54747060-2', 'auto');
+            ga('send', 'pageview');
         </script>
     </body>
     {% endblock body %}

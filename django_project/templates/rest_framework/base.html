@@ -18,6 +18,8 @@
     <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/default.css" %}"/>
 {% endblock style %}
 
+{% block bodyclass %}container{% endblock %}
+
 {% block breadcrumbs %}
     <ul class="breadcrumb">
         {% for breadcrumb_name, breadcrumb_url in breadcrumblist %}

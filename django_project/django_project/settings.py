@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',    
+    'django.contrib.sites',
+    'django.contrib.humanize',    
     
     # 3rd-party Apps
     'rest_framework',
@@ -44,10 +45,13 @@ INSTALLED_APPS = (
     'robots',
     'admin_honeypot',
     'djangobower',
+    'bootstrap_pagination',
+    'dbbackup',
     
     # Apps
     'common',
     'companies',
+    'market',
     'quotes',
     'jobs',
     'api',
@@ -121,10 +125,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.request',
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'quotes.context_processors.latest_quote_date',
+    'market.context_processors.market_status',
 )
 
 # Logging
@@ -167,6 +173,7 @@ NEW_QUOTES_DIR = os.path.join(MEDIA_ROOT, 'new_quotes')
 HISTORICAL_QUOTES_PATH = os.path.join(NEW_QUOTES_DIR, 'psedata.csv')
 COMPANY_NAMES_PATH = os.path.join(NEW_QUOTES_DIR, 'COmpany Names.csv')
 TICKER_URL = 'http://pse.com.ph/stockMarket/home.html?method=getSecuritiesAndIndicesForPublic&ajax=true'
+COMPANY_LIST_URL = 'http://www.pse.com.ph/stockMarket/companyInfoSecurityProfile.html?method=getListedRecords&common=no&ajax=true'
 
 # Django-rest-framework
 REST_FRAMEWORK = {
@@ -194,10 +201,8 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 BOWER_INSTALLED_APPS = (
     'jquery',
     'underscore',
-    'angular',
     'bootstrap',
-    'angular-utils-pagination',
-    'angular-resource',
+    'font-awesome',
 )
 
 try:
