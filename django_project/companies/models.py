@@ -3,10 +3,15 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.db.models import Max, Min
 
+from tinymce.models import HTMLField
+
 class Company(models.Model):
     name = models.CharField(max_length=75, blank=True, null=True)
     symbol = models.CharField(max_length=10, blank=True, null=True)
+    description = HTMLField(blank=True, null=True, default='')
     listing_date = models.DateField(blank=True, null=True)
+    
+    renamed_to = models.ForeignKey('self', blank=True, null=True, default=None, related_name='renamed_from')
     order = models.IntegerField(blank=True, default=0)
     is_index = models.BooleanField(blank=True, default=False)
     is_currently_listed = models.BooleanField(blank=True, default=True)
