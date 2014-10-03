@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
     url(r'^quotes/', include('quotes.urls')),
     url(r'^companies/', include('companies.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^market/index-history$', IndexHistoryView.as_view(), name='index_history'),
     
     url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
