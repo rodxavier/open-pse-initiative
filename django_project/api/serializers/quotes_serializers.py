@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from common.utils import CustomList
 from quotes.models import Quote
 
 class QuoteSerializer(serializers.ModelSerializer):    
