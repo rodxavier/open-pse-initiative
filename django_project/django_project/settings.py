@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'tinymce',
     
     # Apps
-    'common',
     'companies',
     'market',
     'quotes',
