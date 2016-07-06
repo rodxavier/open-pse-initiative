@@ -14,6 +14,7 @@ from rest_framework.reverse import reverse
 
 from companies.models import Company
 from quotes.models import Quote
+from api.renderers import QuoteCSVRenderer
 from api.serializers import QuoteSerializer
 
 class QuoteListView(generics.ListAPIView):
@@ -51,6 +52,7 @@ class QuoteListView(generics.ListAPIView):
         GET     /api/quotes/?from_date=2014-04-07&to_date=2014-11-11
     """
     serializer_class = QuoteSerializer
+    renderer_classes = (JSONRenderer, BrowsableAPIRenderer, XMLRenderer, QuoteCSVRenderer)
     
     def get_queryset(self):
         items = Quote.objects.all()
@@ -82,7 +84,7 @@ class QuoteListView(generics.ListAPIView):
                 to_date = datetime.strptime(to_date, '%Y-%m-%d')
                 items = items.filter(quote_date__lt=to_date)
         return items.order_by('quote_date', '-company__is_index', 'company__symbol')
-        
+
     def list(self, request, *args, **kwargs):
         response = super(generics.ListAPIView, self).list(request, args, kwargs)
         ret_format = self.request.QUERY_PARAMS.get('format')

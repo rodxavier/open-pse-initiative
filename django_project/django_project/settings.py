@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'tinymce',
     
     # Apps
-    'common',
     'companies',
     'market',
     'quotes',
@@ -181,7 +180,6 @@ COMPANY_LIST_URL = 'http://www.pse.com.ph/stockMarket/companyInfoSecurityProfile
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
