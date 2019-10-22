@@ -1,6 +1,6 @@
 Django==1.7
 Markdown==2.4.1
-Pillow==2.5.3
+Pillow==6.2.0
 argparse==1.2.1
 certifi==14.05.14
 django-admin-honeypot==0.4.0
