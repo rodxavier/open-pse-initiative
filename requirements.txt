@@ -10,7 +10,7 @@ django-dbbackup==2.0.3
 django-filter==0.7
 django-kronos==0.4
 django-tinymce==1.5.3
-djangorestframework==3.0.5
+djangorestframework==3.11.2
 dropbox==2.2.0
 psycopg2==2.5.4
 requests==2.4.0
